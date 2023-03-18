@@ -31,7 +31,7 @@ export default function AddPlacePopup({
       onClose={onClose}
       onSubmit={handleSubmit}>
       <input
-        className="popup__input popup__input_data_card-name"
+        className="input popup__input popup__input_data_card-name"
         value={values.name}
         onChange={handleChange}
         id="card-name-input"
@@ -45,7 +45,7 @@ export default function AddPlacePopup({
       />
       <span className="popup__input-error card-name-input-error"></span>
       <input
-        className="popup__input popup__input_data_card-link"
+        className="input popup__input popup__input_data_card-link"
         value={values.link}
         onChange={handleChange}
         id="card-link-input"

@@ -41,7 +41,7 @@ export default function EditProfilePopup({
       onClose={onClose}
       onSubmit={handleSubmit}>
       <input
-        className="popup__input popup__input_data_user-name"
+        className="input popup__input popup__input_data_user-name"
         value={values.name}
         onChange={handleChange}
         id="user-name-input"
@@ -55,7 +55,7 @@ export default function EditProfilePopup({
       />
       <span className="popup__input-error user-name-input-error"></span>
       <input
-        className="popup__input popup__input_data_user-about"
+        className="input popup__input popup__input_data_user-about"
         value={values.about}
         onChange={handleChange}
         id="user-about-input"

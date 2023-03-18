@@ -1,13 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-export default function PopupWithForm({
-  title,
-  name,
-  children,
-  isLoading,
-  onClose,
-  onSubmit,
-}) {
+export default function InfoTooltip({ onClose }) {
   const popupRef = useRef();
 
   function closePopup(e) {
@@ -53,16 +46,16 @@ export default function PopupWithForm({
 
   return (
     <div
-      className={`popup popup_name_${name}`}
+      className="popup popup_name_tooltip"
       ref={popupRef}
       onClick={closePopup}>
-      <div className="popup__container popup__container_for_form">
+      <div className="popup__container  popup__container_for_form">
         <button
           className="popup__close-btn"
           type="button"
           aria-label="закрытие окна"></button>
-        <h3 className="popup__title">{title}</h3>
-        <div className="popup__content-box">
+
+        {/* <div className="popup__content-box">
           <form
             className="popup__form"
             onSubmit={onSubmit}
@@ -77,7 +70,7 @@ export default function PopupWithForm({
                 : "Сохранить"}
             </button>
           </form>
-        </div>
+        </div> */}
       </div>
     </div>
   );

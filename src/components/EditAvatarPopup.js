@@ -30,7 +30,7 @@ export default function EditAvatarPopup({
       onClose={onClose}
       onSubmit={handleSubmit}>
       <input
-        className="popup__input popup__input_data_avatar"
+        className="input popup__input popup__input_data_avatar"
         ref={avatarRef}
         id="avatar-input"
         type="url"

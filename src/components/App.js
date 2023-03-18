@@ -13,10 +13,14 @@ import ErrorMessage from "./ErrorMessage";
 import Footer from "./Footer";
 import Header from "./Header";
 import ImagePopup from "./ImagePopup";
+import InfoTooltip from "./InfoTooltip";
 import Main from "./Main";
+import RouterApp from "./RouterApp";
 import Spinner from "./Spinner";
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
   const [currentUser, setCurrentUser] = useState(
     {}
   );
@@ -162,7 +166,7 @@ function App() {
           <CurrentUserContext.Provider
             value={currentUser}>
             <Header />
-            <Main
+            {/* <Main
               cards={cards}
               onEditAvatar={handleEditAvatarClick}
               onEditProfile={
@@ -172,7 +176,9 @@ function App() {
               onCardClick={handleCardClick}
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
-            />
+            /> */}
+
+            <RouterApp loggedIn={loggedIn} />
 
             <Footer />
 
@@ -211,6 +217,8 @@ function App() {
                 onClose={closeAllPopups}
               />
             )}
+
+            <InfoTooltip />
           </CurrentUserContext.Provider>
         </div>
       )}

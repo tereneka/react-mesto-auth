@@ -1,7 +1,24 @@
 import React, { useEffect, useRef } from "react";
+import successImg from "../images/success.svg";
+import errorImg from "../images/error.svg";
 
-export default function InfoTooltip({ onClose }) {
+export default function InfoTooltip({
+  state,
+  onClose,
+}) {
   const popupRef = useRef();
+
+  const isSuccess = state && state === "success";
+
+  const text = `${
+    isSuccess
+      ? "Вы успешно зарегистрировались!"
+      : "Что-то пошло не так! Попробуйте ещё раз."
+  }`;
+
+  const imgSrc = `${
+    isSuccess ? successImg : errorImg
+  }`;
 
   function closePopup(e) {
     if (
@@ -49,28 +66,18 @@ export default function InfoTooltip({ onClose }) {
       className="popup popup_name_tooltip"
       ref={popupRef}
       onClick={closePopup}>
-      <div className="popup__container  popup__container_for_form">
+      <div className="popup__container  popup__container_whith-info popup__container_for_tooltip">
         <button
           className="popup__close-btn"
           type="button"
           aria-label="закрытие окна"></button>
 
-        {/* <div className="popup__content-box">
-          <form
-            className="popup__form"
-            onSubmit={onSubmit}
-            method="post"
-            name={name}>
-            {children}
-            <button
-              className="submit-btn popup__submit-btn"
-              type="submit">
-              {isLoading
-                ? "Сохранение..."
-                : "Сохранить"}
-            </button>
-          </form>
-        </div> */}
+        <img
+          className="popup__icon"
+          src={imgSrc}
+          alt={state}
+        />
+        <p className="popup__paragraph">{text}</p>
       </div>
     </div>
   );

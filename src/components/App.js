@@ -40,6 +40,8 @@ function App() {
   ] = useState(false);
   const [selectedCard, setSelectedCard] =
     useState(null);
+  const [tooltipState, setTooltipState] =
+    useState("");
   const [
     isFormDataLoading,
     setIsFormDataLoading,
@@ -133,6 +135,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard(null);
+    setTooltipState("");
   }
 
   useEffect(() => {
@@ -218,7 +221,12 @@ function App() {
               />
             )}
 
-            <InfoTooltip />
+            {tooltipState && (
+              <InfoTooltip
+                state={tooltipState}
+                onClose={closeAllPopups}
+              />
+            )}
           </CurrentUserContext.Provider>
         </div>
       )}

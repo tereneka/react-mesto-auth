@@ -15,3 +15,10 @@ export const dbConfig = {
     "Content-Type": "application/json",
   },
 };
+
+export const authConfig = {
+  baseUrl: "https://auth.nomoreparties.co",
+  headers: {
+    "Content-Type": "application/json",
+  },
+};

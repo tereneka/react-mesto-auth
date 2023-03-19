@@ -1,44 +1,37 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import InfoTooltip from "./InfoTooltip";
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
+import { auth } from "../utils/auth";
 import RegisterForm from "./RegisterForm";
 
-export default function Register() {
+export default function Register({
+  setTooltipState,
+}) {
+  const navigate = useNavigate();
+
+  function handleFormSubmit(e, values) {
+    e.preventDefault();
+
+    auth.register(values).then((res) => {
+      if (res.data) {
+        setTooltipState("success");
+        navigate("/sign-in");
+      } else {
+        setTooltipState("error");
+      }
+    });
+  }
+
   return (
     <div className="register">
       <RegisterForm
         title="Регистрация"
         formName="register"
         btnText="Зарегистрироваться"
+        onSubmit={handleFormSubmit}
       />
-
-      {/* <h1 className="register__title">
-        Регистрация
-      </h1>
-
-      <form
-        className="register__form"
-        name="register">
-        <input
-          className="input register__input"
-          name="email"
-          placeholder="Email"
-          type="email"
-          required
-        />
-
-        <input
-          className="input register__input"
-          name="password"
-          placeholder="Пароль"
-          type="password"
-          required
-        />
-
-        <button className="submit-btn register__submit-btn">
-          Зарегистрироваться
-        </button>
-      </form> */}
 
       <Link
         className="register__link"

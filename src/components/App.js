@@ -169,7 +169,11 @@ function App() {
           <CurrentUserContext.Provider
             value={currentUser}>
             <Header />
-            {/* <Main
+
+            <RouterApp
+              loggedIn={loggedIn}
+              setLoggedIn={setLoggedIn}
+              setTooltipState={setTooltipState}
               cards={cards}
               onEditAvatar={handleEditAvatarClick}
               onEditProfile={
@@ -179,9 +183,7 @@ function App() {
               onCardClick={handleCardClick}
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
-            /> */}
-
-            <RouterApp loggedIn={loggedIn} />
+            />
 
             <Footer />
 

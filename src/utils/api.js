@@ -8,9 +8,9 @@ class Api {
 
   _getApi(endpoint, method, body) {
     return fetch(`${this._baseUrl}/${endpoint}`, {
-      method: method,
+      method,
       headers: this._headers,
-      body: body,
+      body,
     }).then((res) => this._getResult(res));
   }
 

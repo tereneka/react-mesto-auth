@@ -5,7 +5,19 @@ import Main from "./Main";
 import ProtectedRoute from "./ProtectedRoute";
 import Register from "./Register";
 
-export default function RouterApp({ loggedIn }) {
+export default function RouterApp({
+  loggedIn,
+  setLoggedIn,
+  setTooltipState,
+
+  cards,
+  onEditAvatar,
+  onEditProfile,
+  onAddPlace,
+  onCardClick,
+  onCardLike,
+  onCardDelete,
+}) {
   return (
     <Routes>
       <Route
@@ -14,18 +26,34 @@ export default function RouterApp({ loggedIn }) {
           <ProtectedRoute
             element={Main}
             loggedIn={loggedIn}
+            cards={cards}
+            onEditAvatar={onEditAvatar}
+            onEditProfile={onEditProfile}
+            onAddPlace={onAddPlace}
+            onCardClick={onCardClick}
+            onCardLike={onCardLike}
+            onCardDelete={onCardDelete}
           />
         }
       />
 
       <Route
         path="/sign-up"
-        element={<Register />}
+        element={
+          <Register
+            setTooltipState={setTooltipState}
+          />
+        }
       />
 
       <Route
         path="/sign-in"
-        element={<Login />}
+        element={
+          <Login
+            setLoggedIn={setLoggedIn}
+            setTooltipState={setTooltipState}
+          />
+        }
       />
     </Routes>
   );

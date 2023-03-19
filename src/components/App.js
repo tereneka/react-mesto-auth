@@ -1,11 +1,8 @@
-import {
-  createRef,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { api } from "../utils/api";
+import { auth } from "../utils/auth";
 import AddPlacePopup from "./AddPlacePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import EditProfilePopup from "./EditProfilePopup";
@@ -14,16 +11,20 @@ import Footer from "./Footer";
 import Header from "./Header";
 import ImagePopup from "./ImagePopup";
 import InfoTooltip from "./InfoTooltip";
-import Main from "./Main";
 import RouterApp from "./RouterApp";
 import Spinner from "./Spinner";
 
 function App() {
+  const navigate = useNavigate();
+
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [currentUser, setCurrentUser] = useState(
     {}
   );
+  const [currentUserEmail, setCurrentUserEmail] =
+    useState("");
+
   const [cards, setCards] = useState([]);
 
   const [
@@ -138,20 +139,32 @@ function App() {
     setTooltipState("");
   }
 
+  function handleTokenCheck() {
+    if (localStorage.getItem("jwt")) {
+      auth.checkToken().then((res) => {
+        if (res.data) {
+          setLoggedIn(true);
+          setCurrentUserEmail(res.data.email);
+          navigate("/");
+        }
+      });
+    }
+  }
+
   useEffect(() => {
     api
       .getUserInfo()
       .then((data) => setCurrentUser(data))
       .catch((err) => setIsError(err));
-  }, []);
 
-  useEffect(() => {
     api
       .getCards()
       .then((cardsData) => {
         setCards([...cardsData]);
       })
       .catch((err) => setIsError(err));
+
+    handleTokenCheck();
   }, []);
 
   return (
@@ -168,12 +181,17 @@ function App() {
         <div className="content">
           <CurrentUserContext.Provider
             value={currentUser}>
-            <Header />
+            <Header
+              userEmail={currentUserEmail}
+            />
 
             <RouterApp
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               setTooltipState={setTooltipState}
+              setCurrentUserEmail={
+                setCurrentUserEmail
+              }
               cards={cards}
               onEditAvatar={handleEditAvatarClick}
               onEditProfile={

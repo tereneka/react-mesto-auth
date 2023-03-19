@@ -7,6 +7,7 @@ export default function PopupWithForm({
   isLoading,
   onClose,
   onSubmit,
+  isFormValid,
 }) {
   const popupRef = useRef();
 
@@ -67,11 +68,17 @@ export default function PopupWithForm({
             className="popup__form"
             onSubmit={onSubmit}
             method="post"
-            name={name}>
+            name={name}
+            noValidate>
             {children}
             <button
-              className="submit-btn popup__submit-btn"
-              type="submit">
+              className={`submit-btn popup__submit-btn ${
+                isFormValid
+                  ? ""
+                  : "popup__submit-btn_disabled"
+              }`}
+              type="submit"
+              disabled={!isFormValid}>
               {isLoading
                 ? "Сохранение..."
                 : "Сохранить"}

@@ -8,9 +8,19 @@ export default function AddPlacePopup({
   onClose,
   onAddPlace,
 }) {
-  // мы ещё не проходили тему кастомных хуков
-  const { values, handleChange, setValues } =
-    useForm({ name: "", link: "" });
+  const {
+    values,
+    setValues,
+    errMessages,
+    isTouched,
+    handleChange,
+  } = useForm(["name", "link"]);
+
+  const isFormValid =
+    !Object.values(errMessages).some(
+      (i) => !!i
+    ) &&
+    !Object.values(isTouched).some((i) => !i);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -29,7 +39,8 @@ export default function AddPlacePopup({
       name="add-card"
       isLoading={isLoading}
       onClose={onClose}
-      onSubmit={handleSubmit}>
+      onSubmit={handleSubmit}
+      isFormValid={isFormValid}>
       <input
         className="input popup__input popup__input_data_card-name"
         value={values.name}
@@ -43,7 +54,9 @@ export default function AddPlacePopup({
         minLength="2"
         maxLength="30"
       />
-      <span className="popup__input-error card-name-input-error"></span>
+      <span className="input-error">
+        {errMessages.name}
+      </span>
       <input
         className="input popup__input popup__input_data_card-link"
         value={values.link}
@@ -54,7 +67,9 @@ export default function AddPlacePopup({
         name="link"
         required
       />
-      <span className="popup__input-error card-link-input-error"></span>
+      <span className="input-error">
+        {errMessages.link}
+      </span>
     </PopupWithForm>
   );
 }

@@ -16,14 +16,24 @@ export default function EditProfilePopup({
     CurrentUserContext
   );
 
-  const { values, handleChange, setValues } =
-    useForm({ name: "", about: "" });
+  const {
+    values,
+    setValues,
+    errMessages,
+    isTouched,
+    handleChange,
+  } = useForm(["name", "about"]);
+
+  const isFormValid =
+    !Object.values(errMessages).some(
+      (i) => !!i
+    ) && Object.values(isTouched).some((i) => i);
 
   function handleSubmit(e) {
     e.preventDefault();
     onUpdateUser(values);
   }
-
+  console.log(values);
   useEffect(() => {
     if (isOpen) {
       setValues({
@@ -39,7 +49,8 @@ export default function EditProfilePopup({
       name="edit-profile"
       isLoading={isLoading}
       onClose={onClose}
-      onSubmit={handleSubmit}>
+      onSubmit={handleSubmit}
+      isFormValid={isFormValid}>
       <input
         className="input popup__input popup__input_data_user-name"
         value={values.name}
@@ -53,7 +64,10 @@ export default function EditProfilePopup({
         maxLength="40"
         placeholder="Имя"
       />
-      <span className="popup__input-error user-name-input-error"></span>
+      <span className="input-error">
+        {errMessages.name}
+      </span>
+
       <input
         className="input popup__input popup__input_data_user-about"
         value={values.about}
@@ -66,7 +80,9 @@ export default function EditProfilePopup({
         maxLength="200"
         placeholder="О себе"
       />
-      <span className="popup__input-error user-about-input-error"></span>
+      <span className="input-error">
+        {errMessages.about}
+      </span>
     </PopupWithForm>
   );
 }

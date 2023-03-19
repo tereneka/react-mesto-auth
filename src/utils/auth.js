@@ -6,12 +6,12 @@ class Auth {
     this._headers = headers;
   }
 
-  _getApi(
+  _getApi({
     endpoint,
     method,
     body,
-    optionalHeaders
-  ) {
+    optionalHeaders,
+  }) {
     return fetch(`${this._baseUrl}/${endpoint}`, {
       method,
       headers: {
@@ -23,18 +23,26 @@ class Auth {
   }
 
   register({ password, email }) {
-    return this._getApi("signup", "POST", {
-      password,
-      email,
+    return this._getApi({
+      endpoint: "signup",
+      method: "POST",
+      body: {
+        password,
+        email,
+      },
     })
       .then((data) => data)
       .catch((err) => err);
   }
 
   authorize({ password, email }) {
-    return this._getApi("signin", "POST", {
-      password,
-      email,
+    return this._getApi({
+      endpoint: "signin",
+      method: "POST",
+      body: {
+        password,
+        email,
+      },
     })
       .then((data) => {
         if (data.token) {
@@ -47,8 +55,12 @@ class Auth {
 
   checkToken() {
     const jwt = localStorage.getItem("jwt");
-    return this._getApi("users/me", "GET", null, {
-      Authorization: `Bearer ${jwt}`,
+    return this._getApi({
+      endpoint: "users/me",
+      method: "GET",
+      optionalHeaders: {
+        Authorization: `Bearer ${jwt}`,
+      },
     })
       .then((data) => data)
       .catch((err) => err);

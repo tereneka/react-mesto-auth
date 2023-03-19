@@ -9,7 +9,7 @@ export default function RouterApp({
   loggedIn,
   setLoggedIn,
   setTooltipState,
-
+  setCurrentUserEmail,
   cards,
   onEditAvatar,
   onEditProfile,
@@ -52,6 +52,9 @@ export default function RouterApp({
           <Login
             setLoggedIn={setLoggedIn}
             setTooltipState={setTooltipState}
+            setCurrentUserEmail={
+              setCurrentUserEmail
+            }
           />
         }
       />

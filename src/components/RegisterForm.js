@@ -7,8 +7,18 @@ export default function RegisterForm({
   btnText,
   onSubmit,
 }) {
-  const { values, handleChange, setValues } =
-    useForm({ email: "", password: "" });
+  const {
+    values,
+    errMessages,
+    isTouched,
+    handleChange,
+  } = useForm(["email", "password"]);
+
+  const isFormValid =
+    !Object.values(errMessages).some(
+      (i) => !!i
+    ) &&
+    !Object.values(isTouched).some((i) => !i);
 
   return (
     <>
@@ -17,7 +27,8 @@ export default function RegisterForm({
       <form
         className="register__form"
         name={formName}
-        onSubmit={(e) => onSubmit(e, values)}>
+        onSubmit={(e) => onSubmit(e, values)}
+        noValidate>
         <input
           className="input register__input"
           value={values.email}
@@ -27,6 +38,9 @@ export default function RegisterForm({
           type="email"
           required
         />
+        <span className="input-error">
+          {errMessages.email}
+        </span>
 
         <input
           className="input register__input"
@@ -38,8 +52,18 @@ export default function RegisterForm({
           required
           minLength={8}
         />
+        <span className="input-error">
+          {errMessages.password}
+        </span>
 
-        <button className="submit-btn register__submit-btn">
+        <button
+          className={`submit-btn register__submit-btn ${
+            isFormValid
+              ? ""
+              : "register__submit-btn_disabled"
+          }`}
+          type="submit"
+          disabled={!isFormValid}>
           {btnText}
         </button>
       </form>

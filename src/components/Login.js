@@ -6,6 +6,7 @@ import RegisterForm from "./RegisterForm";
 export default function Login({
   setLoggedIn,
   setTooltipState,
+  setCurrentUserEmail,
 }) {
   const navigate = useNavigate();
 
@@ -13,9 +14,9 @@ export default function Login({
     e.preventDefault();
 
     auth.authorize(values).then((data) => {
-      console.log(data);
       if (data?.token) {
         setLoggedIn(true);
+        setCurrentUserEmail(values.email);
         navigate("/");
       } else {
         setTooltipState("error");

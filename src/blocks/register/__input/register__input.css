@@ -3,15 +3,4 @@
   background-color: var(--dark-color);
   border-bottom-color: rgb(204, 204, 204);
   width: 100%;
-  margin-bottom: 30px;
-}
-
-.register__input:last-of-type {
-  margin-bottom: 216px;
-}
-
-@media screen and (max-width: 600px) {
-  .register__input:last-of-type {
-    margin-bottom: 173px;
-  }
 }

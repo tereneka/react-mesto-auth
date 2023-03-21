@@ -3,18 +3,19 @@ import successImg from "../images/success.svg";
 import errorImg from "../images/error.svg";
 
 export default function InfoTooltip({
-  state,
+  data,
   onClose,
 }) {
   const popupRef = useRef();
 
-  const isSuccess = state && state === "success";
+  const isSuccess =
+    data.state && data.state === "success";
 
-  const text = `${
-    isSuccess
-      ? "Вы успешно зарегистрировались!"
-      : "Что-то пошло не так! Попробуйте ещё раз."
-  }`;
+  // const text = `${
+  //   isSuccess
+  //     ? "Вы успешно зарегистрировались!"
+  //     : "Что-то пошло не так! Попробуйте ещё раз."
+  // }`;
 
   const imgSrc = `${
     isSuccess ? successImg : errorImg
@@ -75,9 +76,11 @@ export default function InfoTooltip({
         <img
           className="popup__icon"
           src={imgSrc}
-          alt={state}
+          alt={data.state}
         />
-        <p className="popup__paragraph">{text}</p>
+        <p className="popup__paragraph">
+          {data.message}
+        </p>
       </div>
     </div>
   );

@@ -7,9 +7,6 @@ import Register from "./Register";
 
 export default function RouterApp({
   loggedIn,
-  setLoggedIn,
-  setTooltipState,
-  setCurrentUserEmail,
   cards,
   onEditAvatar,
   onEditProfile,
@@ -17,6 +14,8 @@ export default function RouterApp({
   onCardClick,
   onCardLike,
   onCardDelete,
+  onRegister,
+  onLogin,
 }) {
   return (
     <Routes>
@@ -40,23 +39,13 @@ export default function RouterApp({
       <Route
         path="/sign-up"
         element={
-          <Register
-            setTooltipState={setTooltipState}
-          />
+          <Register onRegister={onRegister} />
         }
       />
 
       <Route
         path="/sign-in"
-        element={
-          <Login
-            setLoggedIn={setLoggedIn}
-            setTooltipState={setTooltipState}
-            setCurrentUserEmail={
-              setCurrentUserEmail
-            }
-          />
-        }
+        element={<Login onLogin={onLogin} />}
       />
     </Routes>
   );

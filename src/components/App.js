@@ -41,8 +41,10 @@ function App() {
   ] = useState(false);
   const [selectedCard, setSelectedCard] =
     useState(null);
-  const [tooltipState, setTooltipState] =
-    useState("");
+  const [tooltipData, setTooltipData] = useState({
+    state: "",
+    message: "",
+  });
   const [
     isFormDataLoading,
     setIsFormDataLoading,
@@ -50,9 +52,8 @@ function App() {
 
   const [isError, setIsError] = useState("");
 
-  const isContentLoading = !!!(
-    currentUser.name && cards.length
-  );
+  const [isContentLoading, setIsContentLoading] =
+    useState(false);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -136,36 +137,94 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard(null);
-    setTooltipState("");
+    setTooltipData({ state: "", message: "" });
+  }
+
+  function handleLogin(values) {
+    auth
+      .authorize(values)
+      .then((data) => {
+        if (data) {
+          setLoggedIn(true);
+          setCurrentUserEmail(values.email);
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        setTooltipData({
+          state: "error",
+          message: `${
+            err === 401
+              ? "Неверный Email или пароль. Попробуйте ещё раз."
+              : "Что-то пошло не так! Попробуйте ещё раз."
+          }`,
+        });
+      });
+  }
+
+  function handleRegister(values) {
+    auth
+      .register(values)
+      .then((res) => {
+        if (res.data) {
+          setTooltipData({
+            state: "success",
+            message:
+              "Вы успешно зарегистрировались!",
+          });
+          navigate("/sign-in");
+        }
+      })
+      .catch((err) => {
+        setTooltipData({
+          state: "error",
+          message:
+            "Что-то пошло не так! Попробуйте ещё раз.",
+        });
+      });
   }
 
   function handleTokenCheck() {
     if (localStorage.getItem("jwt")) {
-      auth.checkToken().then((res) => {
-        if (res.data) {
-          setLoggedIn(true);
-          setCurrentUserEmail(res.data.email);
-          navigate("/");
-        }
-      });
+      setIsContentLoading(true);
+      auth
+        .checkToken()
+        .then((res) => {
+          if (res.data) {
+            setLoggedIn(true);
+            setCurrentUserEmail(res.data.email);
+            navigate("/");
+          }
+        })
+        .catch(() => {
+          localStorage.removeItem("jwt");
+          setIsContentLoading(false);
+        });
     }
   }
 
   useEffect(() => {
-    api
-      .getUserInfo()
-      .then((data) => setCurrentUser(data))
-      .catch((err) => setIsError(err));
-
-    api
-      .getCards()
-      .then((cardsData) => {
-        setCards([...cardsData]);
-      })
-      .catch((err) => setIsError(err));
-
     handleTokenCheck();
   }, []);
+
+  useEffect(() => {
+    if (loggedIn) {
+      Promise.all([
+        api.getUserInfo(),
+        api.getCards(),
+      ])
+        .then(([user, cards]) => {
+          setCurrentUser(user);
+          setCards([...cards]);
+        })
+        .catch((err) => {
+          setIsError(err);
+        })
+        .finally(() =>
+          setIsContentLoading(false)
+        );
+    }
+  }, [loggedIn]);
 
   return (
     <>
@@ -173,9 +232,7 @@ function App() {
         <ErrorMessage message={isError} />
       )}
 
-      {isContentLoading && !isError && (
-        <Spinner />
-      )}
+      {isContentLoading && <Spinner />}
 
       {!isContentLoading && !isError && (
         <div className="content">
@@ -187,11 +244,6 @@ function App() {
 
             <RouterApp
               loggedIn={loggedIn}
-              setLoggedIn={setLoggedIn}
-              setTooltipState={setTooltipState}
-              setCurrentUserEmail={
-                setCurrentUserEmail
-              }
               cards={cards}
               onEditAvatar={handleEditAvatarClick}
               onEditProfile={
@@ -201,6 +253,8 @@ function App() {
               onCardClick={handleCardClick}
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
+              onRegister={handleRegister}
+              onLogin={handleLogin}
             />
 
             <Footer />
@@ -241,9 +295,9 @@ function App() {
               />
             )}
 
-            {tooltipState && (
+            {tooltipData.state && (
               <InfoTooltip
-                state={tooltipState}
+                data={tooltipData}
                 onClose={closeAllPopups}
               />
             )}

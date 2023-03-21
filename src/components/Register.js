@@ -1,27 +1,11 @@
 import React from "react";
-import {
-  Link,
-  useNavigate,
-} from "react-router-dom";
-import { auth } from "../utils/auth";
+import { Link } from "react-router-dom";
 import RegisterForm from "./RegisterForm";
 
-export default function Register({
-  setTooltipState,
-}) {
-  const navigate = useNavigate();
-
+export default function Register({ onRegister }) {
   function handleFormSubmit(e, values) {
     e.preventDefault();
-
-    auth.register(values).then((res) => {
-      if (res.data) {
-        setTooltipState("success");
-        navigate("/sign-in");
-      } else {
-        setTooltipState("error");
-      }
-    });
+    onRegister(values);
   }
 
   return (

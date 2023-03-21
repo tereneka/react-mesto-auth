@@ -19,7 +19,13 @@ class Auth {
         ...optionalHeaders,
       },
       body: JSON.stringify(body),
-    }).then((res) => res.json());
+    }).then((res) => this._getResult(res));
+  }
+
+  _getResult(res) {
+    return res.ok
+      ? res.json()
+      : Promise.reject(res.status);
   }
 
   register({ password, email }) {
@@ -30,9 +36,7 @@ class Auth {
         password,
         email,
       },
-    })
-      .then((data) => data)
-      .catch((err) => err);
+    });
   }
 
   authorize({ password, email }) {
@@ -43,14 +47,12 @@ class Auth {
         password,
         email,
       },
-    })
-      .then((data) => {
-        if (data.token) {
-          localStorage.setItem("jwt", data.token);
-        }
+    }).then((data) => {
+      if (data.token) {
+        localStorage.setItem("jwt", data.token);
         return data;
-      })
-      .catch((err) => err);
+      }
+    });
   }
 
   checkToken() {
@@ -61,9 +63,7 @@ class Auth {
       optionalHeaders: {
         Authorization: `Bearer ${jwt}`,
       },
-    })
-      .then((data) => data)
-      .catch((err) => err);
+    });
   }
 }
 

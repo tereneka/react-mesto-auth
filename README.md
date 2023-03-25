@@ -39,3 +39,5 @@
 ```sh
  npm run start
 ```
+
+[посмотреть проект можно здесь](https://tereneka.github.io/react-mesto-auth/)

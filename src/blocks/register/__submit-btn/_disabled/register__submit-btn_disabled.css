@@ -1,6 +1,0 @@
-.register__submit-btn_disabled {
-  background-color: var(--dark-color);
-  color: var(--light-color);
-  border: 1px solid var(--light-color);
-  opacity: 0.2;
-}
